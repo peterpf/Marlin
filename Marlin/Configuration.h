@@ -537,6 +537,7 @@
 #define DRIVER_MICROSTEPS_X 32.0
 #define DRIVER_MICROSTEPS_Y 32.0
 #define DRIVER_MICROSTEPS_Z 32.0
+#define DRIVER_MICROSTEPS_E 32.0
 
 #define PULLEY_TOOTH_COUNT_X 20
 #define PULLEY_TOOTH_COUNT_Y 20
@@ -546,8 +547,8 @@
 #define PITCH_OF_Z_ROD 1.25
 #define MOTOR_Z_ROD_RATIO 8
 
-// makergear extruder box
-#define EXTRUDER_GEAR_RATIO 13.0
+// some magix constant to fix under/over-extrusion
+#define EXTRUDER_GEAR_RATIO 1.0
 
 #define PINCH_WHEEL_DIAMETER 9
 
@@ -557,7 +558,7 @@
 
 #define AXIS_STEPS_PER_UNIT_Z (STEPS_PER_REVOLUTION_Z / MOTOR_Z_ROD_RATIO / PITCH_OF_Z_ROD * DRIVER_MICROSTEPS_Z)
 
-#define AXIS_STEPS_PER_UNIT_E (STEPS_PER_REVOLUTION_E * EXTRUDER_GEAR_RATIO / (PINCH_WHEEL_DIAMETER * PI))
+#define AXIS_STEPS_PER_UNIT_E (STEPS_PER_REVOLUTION_E * DRIVER_MICROSTEPS_E * EXTRUDER_GEAR_RATIO / (PINCH_WHEEL_DIAMETER * PI))
 
 #define DEFAULT_AXIS_STEPS_PER_UNIT {AXIS_STEPS_PER_UNIT_X, AXIS_STEPS_PER_UNIT_Y, AXIS_STEPS_PER_UNIT_Z, AXIS_STEPS_PER_UNIT_E}
 
@@ -566,7 +567,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 500, 500, 35, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 35, 25 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -574,7 +575,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 5000 }
+#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 5000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -713,9 +714,9 @@
  *      O-- FRONT --+
  *    (0,0)
  */
-#define X_PROBE_OFFSET_FROM_EXTRUDER 10  // X offset: -left  +right  [of the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER -55  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -10   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
@@ -798,7 +799,7 @@
 
 //#define NO_MOTION_BEFORE_HOMING  // Inhibit movement until all axes have been homed
 
-//#define Z_HOMING_HEIGHT 4  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT 10  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
                              // Be sure you have this distance over your Z_MAX_POS in case.
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
