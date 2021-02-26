@@ -232,7 +232,14 @@
 
 #ifndef FAN_PIN
   #if EITHER(IS_RAMPS_EFB, IS_RAMPS_EFF)          // Hotend, Fan, Bed or Hotend, Fan, Fan
-    #define FAN_PIN                 RAMPS_D9_PIN
+
+    /**
+     * The parts are cooled by the fan assigned to FAN_PIN. This is usually the fan directed at the nozzle's tip.
+     * My printer setup has an extruder and fan for cooling the motor drivers, but no part-cooling fan.
+     * Therefore, the FAN_PIN is obsolete and blocks me from using this pin for the CONTROLLER_FAN_PIN (to have a speed-adjustable case fan).
+     * Setting FAN_PIN to -1 takes care of the problem.
+     **/
+    #define FAN_PIN                 -1 // Unassign the FAN_PIN for part-cooling.
   #elif EITHER(IS_RAMPS_EEF, IS_RAMPS_SF)         // Hotend, Hotend, Fan or Spindle, Fan
     #define FAN_PIN                 RAMPS_D8_PIN
   #elif ENABLED(IS_RAMPS_EEB)                     // Hotend, Hotend, Bed
